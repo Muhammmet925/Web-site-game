@@ -1,0 +1,6 @@
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "database": "ai-studio-android-novabase-9201d29c-71ac-4e5e-947d-643510dce57c"
+  }
+}

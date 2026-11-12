@@ -1,0 +1,72 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isValidLeaderboard(data) {
+      return data.userId is string &&
+             data.playerName is string && data.playerName.size() > 0 && data.playerName.size() <= 40 &&
+             data.playerFaction is string &&
+             data.totalVictoryPoints is number && data.totalVictoryPoints >= 0 &&
+             data.matchesWon is number && data.matchesWon >= 0 &&
+             data.matchesPlayed is number && data.matchesPlayed >= 0 &&
+             data.winRatePct is number &&
+             data.rankTitle is string &&
+             data.createdAt is timestamp &&
+             data.updatedAt is timestamp;
+    }
+
+    function isValidMatchHistory(data) {
+      return data.userId is string &&
+             data.playerName is string &&
+             data.playerFaction is string &&
+             data.skirmishMapTitle is string &&
+             data.isVictory is bool &&
+             data.totalVictoryPoints is number &&
+             data.mapControlPoints is number &&
+             data.resourceExtractionPoints is number &&
+             data.unitDestructionPoints is number &&
+             data.matchDurationSeconds is number &&
+             data.createdAt is timestamp;
+    }
+
+    function isValidChatMessage(data) {
+      return data.senderId is string &&
+             data.senderName is string && data.senderName.size() > 0 && data.senderName.size() <= 40 &&
+             data.senderFaction is string &&
+             data.messageText is string && data.messageText.size() > 0 && data.messageText.size() <= 300 &&
+             data.isSystemNotification is bool &&
+             data.createdAt is timestamp;
+    }
+
+    // Leaderboard entries (Global public read for authenticated players, owner write)
+    match /leaderboard/{userId} {
+      allow read: if isAuthenticated();
+      allow create, update: if isOwner(userId) && isValidLeaderboard(request.resource.data);
+      allow delete: if false;
+    }
+
+    // Match history records (Private to player)
+    match /match_history/{matchId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid && isValidMatchHistory(request.resource.data);
+      allow update, delete: if false;
+    }
+
+    // Skirmish multiplayer chat & match event notifications
+    match /skirmish_chat/{messageId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && 
+                    request.resource.data.senderId == request.auth.uid && 
+                    isValidChatMessage(request.resource.data);
+      allow update, delete: if false;
+    }
+  }
+}

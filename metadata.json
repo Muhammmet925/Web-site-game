@@ -1,0 +1,6 @@
+{
+  "name": "Nova Base",
+  "description": "C&C Generals tarzı dönem geçişli (5. Yy - Modern Çağ) mobil RTS oyunu, gerçek ülkeler, üretim kuyruğu ve C# MonoGame mimarisi.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

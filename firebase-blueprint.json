@@ -1,0 +1,46 @@
+{
+  "entities": {
+    "LeaderboardEntry": {
+      "collection": "leaderboard",
+      "fields": {
+        "userId": { "type": "string", "required": true },
+        "playerName": { "type": "string", "required": true },
+        "playerFaction": { "type": "string", "required": true },
+        "totalVictoryPoints": { "type": "number", "required": true },
+        "matchesWon": { "type": "number", "required": true },
+        "matchesPlayed": { "type": "number", "required": true },
+        "winRatePct": { "type": "number", "required": true },
+        "rankTitle": { "type": "string", "required": true },
+        "createdAt": { "type": "timestamp", "required": true },
+        "updatedAt": { "type": "timestamp", "required": true }
+      }
+    },
+    "MatchHistoryRecord": {
+      "collection": "match_history",
+      "fields": {
+        "userId": { "type": "string", "required": true },
+        "playerName": { "type": "string", "required": true },
+        "playerFaction": { "type": "string", "required": true },
+        "skirmishMapTitle": { "type": "string", "required": true },
+        "isVictory": { "type": "boolean", "required": true },
+        "totalVictoryPoints": { "type": "number", "required": true },
+        "mapControlPoints": { "type": "number", "required": true },
+        "resourceExtractionPoints": { "type": "number", "required": true },
+        "unitDestructionPoints": { "type": "number", "required": true },
+        "matchDurationSeconds": { "type": "number", "required": true },
+        "createdAt": { "type": "timestamp", "required": true }
+      }
+    },
+    "SkirmishChatMessage": {
+      "collection": "skirmish_chat",
+      "fields": {
+        "senderId": { "type": "string", "required": true },
+        "senderName": { "type": "string", "required": true },
+        "senderFaction": { "type": "string", "required": true },
+        "messageText": { "type": "string", "required": true },
+        "isSystemNotification": { "type": "boolean", "required": true },
+        "createdAt": { "type": "timestamp", "required": true }
+      }
+    }
+  }
+}
